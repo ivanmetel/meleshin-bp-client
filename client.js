@@ -6,7 +6,7 @@
 // поэтому изменения админы приходят в ЛК без дублирования кода.
 (function () {
   const ADMIN = new URLSearchParams(location.search).get("admin") || "https://ivanmetel.github.io/meleshin-bp-admin/";
-  const V = "19";
+  const V = "20";
 
   const loadScript = (src) => new Promise((res, rej) => {
     const s = document.createElement("script");
@@ -46,7 +46,7 @@
     const a = build();
     document.getElementById("hero").innerHTML = renderHero(a);
     document.getElementById("content").innerHTML = '<div id="est-root">' + viewHtml(a) + "</div>";
-    document.getElementById("print-doc").innerHTML = renderDoc(a);
+    document.getElementById("print-doc").innerHTML = renderDoc(a, { print: true });
     wire();
   }
 

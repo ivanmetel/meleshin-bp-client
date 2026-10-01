@@ -639,15 +639,43 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 }
 
 /* ---------- Печать / сохранение PDF ---------- */
+/* Печатается только документ КП (#print-doc). Экранная метафора листов А4
+   в печать не переходит: документ течёт по страницам А4 сплошным потоком,
+   секции держатся вместе, принудительных разрывов и пустых страниц нет
+   (Иван 01.10 — «в pdf много пустого места»). */
+@page { size: A4; margin: 16mm 15mm 18mm; }
 @media print {
   body { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .sim-banner, .d3-top, .d3-hero, .d3-side, .d3-toolbar, .page-footer { display: none !important; }
+  .sim-banner, .d3-top, .d3-hero, .d3-side, .d3-toolbar, .page-footer, .d3-main { display: none !important; }
   .page { padding: 0; max-width: none; }
   .app { box-shadow: none; border-radius: 0; }
-  .d3-main { display: block; }
-  .d3-content { padding: 0; overflow: visible; }
-  .doc-slide { border: none; box-shadow: none; border-radius: 0; width: auto; min-height: 0; margin: 0; padding: 0; page-break-after: always; break-after: page; }
-  .doc-slide:last-child { page-break-after: auto; break-after: auto; }
+  #print-doc { display: block !important; }
+  .doc-slide {
+    border: none; box-shadow: none; border-radius: 0;
+    width: auto; min-height: 0; margin: 0 0 9mm; padding: 0;
+    display: block;
+    page-break-after: auto; break-after: auto;
+    page-break-inside: avoid; break-inside: avoid;
+  }
+  .doc-slide:last-child { margin-bottom: 0; }
+  .doc-manager-bottom { margin: 6mm 0 0; }
+  /* Таблица работ в печати — настоящий <table>: строки текут по страницам,
+     thead повторяется сам; зона работ не держится одной страницей */
+  #print-doc #sec-works { page-break-inside: auto; break-inside: auto; }
+  #print-doc #sec-works .doc-h2 { page-break-after: avoid; break-after: avoid; }
+  .bp-table-print { width: 100%; border-collapse: collapse; }
+  .bp-table-print th {
+    font-size: 12px; font-weight: 600; color: var(--ink-3); text-align: left;
+    padding: 7px 10px; background: var(--bg-soft); border-bottom: 1px solid var(--line);
+  }
+  .bp-table-print th.r, .bp-table-print td.r { text-align: right; }
+  .bp-table-print td { font-size: 14px; color: var(--ink-1); padding: 9px 10px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .bp-table-print td.num { font-family: 'Manrope', sans-serif; font-size: 12px; color: var(--ink-3); }
+  .bp-table-print td.unit { font-size: 12px; color: var(--ink-3); }
+  .bp-table-print td.qty, .bp-table-print td.price { text-align: right; color: var(--ink-2); }
+  .bp-table-print td.sum { text-align: right; font-family: 'Manrope', sans-serif; font-weight: 700; }
+  .bp-table-print tr { page-break-inside: avoid; break-inside: avoid; }
+  .bp-table-print .bp-total-row td { padding: 12px 0 0; border-bottom: none; }
 }
 
 @media (max-width: 1100px) {
@@ -670,7 +698,3 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 
 /* Документ для «Сохранить PDF»: на экране скрыт, печатается вместо кабинета */
 #print-doc { display: none; }
-@media print {
-  .view-estimate { display: none !important; }
-  #print-doc { display: flex !important; flex-direction: column; gap: 18px; }
-}
