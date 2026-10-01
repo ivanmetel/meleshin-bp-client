@@ -21,7 +21,8 @@
     const m = location.hash.match(/^#preview=(.+)$/);
     if (!m) return null;
     try {
-      return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(m[1]), (c) => c.charCodeAt(0))));
+      const b64 = decodeURIComponent(m[1]);   // хэш приходит percent-encoded
+      return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(b64), (c) => c.charCodeAt(0))));
     } catch (e) {
       return null;
     }
