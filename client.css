@@ -311,7 +311,7 @@ li { margin: 4px 0; }
 .doc-title {
   font-family: 'Inter', sans-serif;
   font-size: 28px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.02em;
 }
 .doc-subtitle { font-size: 14px; color: var(--ink-2); margin-top: 8px; }
@@ -325,11 +325,12 @@ li { margin: 4px 0; }
 .doc-h3 {
   font-size: 14px;
   font-weight: 600;
-  color: var(--accent-dark);
+  color: var(--ink-1);
   margin: 16px 0 8px;
 }
-.doc-h3.doc-price { font-family: 'Inter', sans-serif; font-size: 16px; margin-top: 4px; }
+.doc-h3.doc-price { margin-top: 4px; }
 .doc-flow p { font-size: 14px; line-height: 1.6; color: var(--ink-2); margin: 8px 0; }
+.doc-flow li { font-size: 14px; color: var(--ink-2); }
 .doc-grid { display: grid; grid-template-columns: 63% 1fr; gap: 22px; align-items: start; }
 .doc-hero { border-radius: var(--radius-md); overflow: hidden; }
 .doc-hero img { width: 100%; height: 250px; object-fit: cover; }
@@ -338,22 +339,8 @@ li { margin: 4px 0; }
 .doc-photos { display: flex; gap: 10px; }
 .doc-photos img { flex: 1; height: 215px; object-fit: cover; border-radius: var(--radius-md); }
 .doc-gallery img { height: 150px; }
-.doc-note { font-size: 12px; color: var(--ink-3); font-style: italic; margin-top: 10px; }
+.doc-note { font-size: 12px; color: var(--ink-3); margin-top: 10px; }
 .doc-filter-note { font-size: 12px; color: var(--ink-3); margin-top: 8px; }
-.doc-mini { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 6px; }
-.doc-mini th {
-  text-align: left;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ink-3);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 8px 10px;
-  background: var(--bg-soft);
-  border-bottom: 1px solid var(--line);
-}
-.doc-mini td { padding: 9px 10px; border-bottom: 1px solid var(--line-soft); color: var(--ink-2); }
-.doc-mini .r { text-align: right; font-variant-numeric: tabular-nums; }
 
 /* Таблица работ (плоская, сплошная нумерация) */
 .bp-table { border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; }
@@ -644,9 +631,9 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 /* Печатается только документ КП (#print-doc) — кабинет не печатается.
    Структура задана нормой (Иван 01.10, «структуру задай»), поток разрывы
    не подбирает: А4, поля 14/13/13, контент 182×271 мм, четыре док-страницы —
-   1 «Объект» ≈248 мм (титул/описание, план, фото ×2), 2 «Состав работ» ≈244 мм
-   (таблица + итог, организация), 3 «Границы» ≈213 мм (не входят, согласования,
-   взаимодействие), 4 «Условия и финал» ≈130 мм при высоте листа 268 (оплата,
+   1 «Объект» ≈254 мм (титул/описание, план, фото ×2), 2 «Состав работ» ≈221 мм
+   (таблица + итог, организация), 3 «Границы» ≈226 мм (не входят, согласования,
+   взаимодействие), 4 «Условия и финал» ≈154 мм при высоте листа 268 (оплата,
    галерея, подпись прижата к низу). Состав страниц назначает движок (engine.js,
    print-сборка: doc-print-page с разрывом после каждой); при строках больше
    ёмкости (PRINT_TABLE_MAX = 18) границы сдвигаются по зонам — 5 страниц. */
@@ -671,12 +658,12 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
   }
   /* Нормированные размеры блоков (замер реальной печати 01.10, мм; ёмкость 271):
      стр. 1 «Объект» = титул/описание 76 + 6 + план 52 (36 + заголовок 10 + отбивка)
-     + 6 + фото-полоса 34 + 6 + фото-полоса 34 ≈ 248 — запас 23 на метрики шрифтов.
+     + 6 + фото-полоса 34 + 6 + фото-полоса 34 ≈ 254 — запас на метрики шрифтов.
      Ряды изображений — inline-block с явной шириной: печатный движок Chrome
      раскладывает flex-ряды нестабильно (галерея из 6 кадров складывалась
      столбцом и переполняла финальную страницу). */
-  .doc-slide p { margin: 5px 0; line-height: 1.5; }
-  .doc-slide li { margin: 2px 0; }
+  .doc-slide p { font-size: 14px; margin: 5px 0; line-height: 1.5; }
+  .doc-slide li { font-size: 14px; margin: 2px 0; }
   .doc-h2 { margin: 0 0 9px; }
   .doc-h3 { margin: 10px 0 6px; }
   .doc-title-outer { margin: 0 0 14px; }
