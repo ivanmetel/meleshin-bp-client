@@ -31,10 +31,8 @@
   // Вид «Условия»: предпросмотр КП + согласование и сохранение PDF (Иван 01.10 —
   // действия убраны из героя и живут здесь).
   function conditionsHtml(a) {
-    const st = STATE.status;
     return '<div class="cond-view"><div class="cond-head"><div class="cond-title">Предпросмотр КП</div>' +
       '<div class="cond-actions">' +
-      (st === "sent" ? '<button class="btn primary" id="btn-approve">Согласовать</button>' : '<button class="btn ghost" disabled>Согласовано</button>') +
       '<button class="btn ghost" id="btn-pdf">Сохранить PDF</button>' +
       "</div></div>" + renderDoc(a) + "</div>";
   }
@@ -69,8 +67,6 @@
       if (roomBtn) { STATE.view = "estimate"; STATE.room = roomBtn.dataset.room; }
       if (scr || roomBtn || viewBtn) estRoot.innerHTML = viewHtml(build());
     });
-    const approve = document.getElementById("btn-approve");
-    if (approve) approve.addEventListener("click", () => { STATE.status = "agreed"; render(); });
     const pdf = document.getElementById("btn-pdf");
     if (pdf) pdf.addEventListener("click", () => window.print());
   }
