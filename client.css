@@ -277,29 +277,25 @@ li { margin: 4px 0; }
 }
 .view-toggle button.active { background: var(--bg-card); color: var(--ink-1); box-shadow: var(--shadow-sm); font-weight: 600; }
 
-/* ---------- Вид: документ (слайды) ---------- */
-/* Вертикальная сборка документа (Иван 01.10): страница = лист А4
-   (794 × 1123 px @96dpi), листы идут сверху вниз, без ярлыков «Слайд N». */
-.view-doc { display: flex; flex-direction: column; gap: 24px; }
-.doc-slide {
-  position: relative;
-  width: 794px;
-  max-width: 100%;
-  min-height: 1123px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+/* ---------- «Условия»: документ КП в читаемом веб-виде ---------- */
+/* Экран той же панели сметы (Иван 01.10): каркас не меняется, листов А4 на
+   экране нет — А4 остаётся у «Сохранить PDF». Карточка документа на тёмной
+   панели, подпись менеджера замыкает документ, под ней — сохранение. */
+.doc-flow {
   background: var(--bg-card);
-  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  padding: 48px 56px;
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
+  padding: 36px 40px 32px;
 }
-/* Подпись менеджера — в самом низу документа: прижата к нижнему краю листа */
+.doc-flow .doc-sec { margin: 0 0 28px; }
+.doc-flow .doc-sec:last-of-type { margin-bottom: 0; }
+.doc-flow .doc-manager-bottom { margin: 24px 0 0; }
+.doc-save { display: flex; justify-content: flex-end; margin-top: 18px; }
+.doc-save .btn { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.22); color: #fff; }
+.doc-save .btn:hover { background: rgba(255,255,255,0.1); }
+
+/* Подпись менеджера — в самом низу документа */
 .doc-manager { text-align: right; color: var(--ink-2); font-size: 14px; line-height: 1.5; }
 .doc-manager a { color: var(--ink-2); text-decoration: none; }
-.doc-manager-bottom { margin: auto 0 0; padding-top: 24px; }
 .doc-title-outer { text-align: center; margin: 6px 0 22px; }
 .doc-title {
   font-family: 'Manrope', sans-serif;
@@ -322,7 +318,7 @@ li { margin: 4px 0; }
   margin: 16px 0 8px;
 }
 .doc-h3.doc-price { font-family: 'Manrope', sans-serif; font-size: 16px; margin-top: 4px; }
-.doc-slide p { font-size: 14px; line-height: 1.6; color: var(--ink-2); margin: 8px 0; }
+.doc-flow p { font-size: 14px; line-height: 1.6; color: var(--ink-2); margin: 8px 0; }
 .doc-grid { display: grid; grid-template-columns: 63% 1fr; gap: 22px; align-items: start; }
 .doc-hero { border-radius: var(--radius-md); overflow: hidden; }
 .doc-hero img { width: 100%; height: 250px; object-fit: cover; }
@@ -400,6 +396,22 @@ li { margin: 4px 0; }
   font-weight: 700;
   letter-spacing: -0.02em;
 }
+
+/* Таблица работ документа — настоящий <table>: одна и та же в карточке «Условия»
+   и в PDF (что клиент читает, то и сохраняет); при выходе за страницу печати
+   шапку повторяет браузер */
+.bp-table-print { width: 100%; border-collapse: collapse; }
+.bp-table-print th {
+  font-size: 12px; font-weight: 600; color: var(--ink-3); text-align: left;
+  padding: 6px 10px; background: var(--bg-soft); border-bottom: 1px solid var(--line);
+}
+.bp-table-print th.r, .bp-table-print td.r { text-align: right; }
+.bp-table-print td { font-size: 14px; color: var(--ink-1); padding: 7px 10px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+.bp-table-print td.num { font-family: 'Manrope', sans-serif; font-size: 12px; color: var(--ink-3); }
+.bp-table-print td.unit { font-size: 12px; color: var(--ink-3); }
+.bp-table-print td.qty, .bp-table-print td.price { text-align: right; color: var(--ink-2); }
+.bp-table-print td.sum { text-align: right; font-family: 'Manrope', sans-serif; font-weight: 700; }
+.bp-table-print .bp-total-row td { padding: 9px 0 0; border-bottom: none; }
 
 /* ---------- Вид: маркдаун ---------- */
 .md-wrap { display: flex; flex-direction: column; gap: 12px; }
@@ -560,16 +572,12 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 .est-rooms button:hover { background: var(--bg-soft); }
 .est-rooms button.active { background: var(--accent-soft); color: var(--accent-dark); }
 .est-rooms button .c { font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-/* Верх навигации (Иван 01.10): «Условия» (предпросмотр КП), «Работы», «Материалы» —
+/* Верх навигации (Иван 01.10): «Условия» (документ КП), «Работы», «Материалы» —
    вертикально над «Помещение». Полосы решётки: Условия 44 — зеркало полосы названия
    блока, Работы 36 — зеркало полосы шапки таблицы, Материалы 40 — зеркало строки 1. */
 .est-rooms button.rail-44 { height: 44px; }
 .est-rooms button.rail-36 { height: 36px; }
-/* Вид «Условия»: предпросмотр КП, согласование и сохранение PDF живут здесь */
-.cond-view { display: flex; flex-direction: column; gap: 24px; }
-.cond-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.cond-title { font-family: 'Manrope', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
-.cond-actions { display: flex; gap: 8px; }
+/* Полоса названия блока панели: «Коммерческое предложение» / «Строительно-монтажные…» / «Материалы» */
 .blk-head {
   display: flex;
   align-items: center;
@@ -639,43 +647,57 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 }
 
 /* ---------- Печать / сохранение PDF ---------- */
-/* Печатается только документ КП (#print-doc). Экранная метафора листов А4
-   в печать не переходит: документ течёт по страницам А4 сплошным потоком,
-   секции держатся вместе, принудительных разрывов и пустых страниц нет
-   (Иван 01.10 — «в pdf много пустого места»). */
-@page { size: A4; margin: 16mm 15mm 18mm; }
+/* Печатается только документ КП (#print-doc) — кабинет не печатается.
+   Структура задана нормой (Иван 01.10, «структуру задай»), поток разрывы
+   не подбирает: А4, поля 14/13/13, контент 182×271 мм, четыре док-страницы —
+   1 «Объект» ≈248 мм (титул/описание, план, фото ×2), 2 «Состав работ» ≈244 мм
+   (таблица + итог, организация), 3 «Границы» ≈213 мм (не входят, согласования,
+   взаимодействие), 4 «Условия и финал» ≈130 мм при высоте листа 268 (оплата,
+   галерея, подпись прижата к низу). Состав страниц назначает движок (engine.js,
+   print-сборка: doc-print-page с разрывом после каждой); при строках больше
+   ёмкости (PRINT_TABLE_MAX = 18) границы сдвигаются по зонам — 5 страниц. */
+@page { size: A4; margin: 13mm 14mm; }
 @media print {
   body { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .sim-banner, .d3-top, .d3-hero, .d3-side, .d3-toolbar, .page-footer, .d3-main { display: none !important; }
   .page { padding: 0; max-width: none; }
   .app { box-shadow: none; border-radius: 0; }
   #print-doc { display: block !important; }
+  /* Док-страница = лист: разрыв после каждой; последняя — естественная высота
+     (принудительная 268 мм порождала пустой лист хвостом в печати Chrome) */
+  .doc-print-page { page-break-after: always; break-after: page; }
+  .doc-print-page:last-child { page-break-after: auto; break-after: auto; }
+  .doc-print-page:last-child .doc-slide:last-child { margin-bottom: 0; }
+  .doc-print-page:last-child .doc-manager-bottom { margin-top: 10mm; }
   .doc-slide {
     border: none; box-shadow: none; border-radius: 0;
-    width: auto; min-height: 0; margin: 0 0 9mm; padding: 0;
+    width: auto; min-height: 0; margin: 0 0 6mm; padding: 0;
     display: block;
-    page-break-after: auto; break-after: auto;
     page-break-inside: avoid; break-inside: avoid;
   }
-  .doc-slide:last-child { margin-bottom: 0; }
-  .doc-manager-bottom { margin: 6mm 0 0; }
-  /* Таблица работ в печати — настоящий <table>: строки текут по страницам,
-     thead повторяется сам; зона работ не держится одной страницей */
-  #print-doc #sec-works { page-break-inside: auto; break-inside: auto; }
-  #print-doc #sec-works .doc-h2 { page-break-after: avoid; break-after: avoid; }
-  .bp-table-print { width: 100%; border-collapse: collapse; }
-  .bp-table-print th {
-    font-size: 12px; font-weight: 600; color: var(--ink-3); text-align: left;
-    padding: 7px 10px; background: var(--bg-soft); border-bottom: 1px solid var(--line);
-  }
-  .bp-table-print th.r, .bp-table-print td.r { text-align: right; }
-  .bp-table-print td { font-size: 14px; color: var(--ink-1); padding: 9px 10px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
-  .bp-table-print td.num { font-family: 'Manrope', sans-serif; font-size: 12px; color: var(--ink-3); }
-  .bp-table-print td.unit { font-size: 12px; color: var(--ink-3); }
-  .bp-table-print td.qty, .bp-table-print td.price { text-align: right; color: var(--ink-2); }
-  .bp-table-print td.sum { text-align: right; font-family: 'Manrope', sans-serif; font-weight: 700; }
+  /* Нормированные размеры блоков (замер реальной печати 01.10, мм; ёмкость 271):
+     стр. 1 «Объект» = титул/описание 76 + 6 + план 52 (36 + заголовок 10 + отбивка)
+     + 6 + фото-полоса 34 + 6 + фото-полоса 34 ≈ 248 — запас 23 на метрики шрифтов.
+     Ряды изображений — inline-block с явной шириной: печатный движок Chrome
+     раскладывает flex-ряды нестабильно (галерея из 6 кадров складывалась
+     столбцом и переполняла финальную страницу). */
+  .doc-slide p { margin: 5px 0; line-height: 1.5; }
+  .doc-slide li { margin: 2px 0; }
+  .doc-h2 { margin: 0 0 9px; }
+  .doc-h3 { margin: 10px 0 6px; }
+  .doc-title-outer { margin: 0 0 14px; }
+  .doc-title { font-size: 28px; }
+  .doc-grid { gap: 16px; }
+  .doc-hero img { height: 150px; }
+  .doc-plan img { height: 36mm; width: auto; max-width: 100%; margin: 0 auto; }
+  .doc-photos { display: block; font-size: 0; }
+  .doc-photos img { display: inline-block; vertical-align: top; width: calc((100% - 20px) / 3); height: 92px; object-fit: cover; }
+  .doc-photos img + img { margin-left: 10px; }
+  .doc-gallery img { width: calc((100% - 50px) / 6); height: 92px; }
+  .doc-note, .doc-filter-note { margin-top: 6px; }
+  /* Таблица работ — правила общие с карточкой «Условия» (см. выше); в печати
+     строка не рвётся */
   .bp-table-print tr { page-break-inside: avoid; break-inside: avoid; }
-  .bp-table-print .bp-total-row td { padding: 12px 0 0; border-bottom: none; }
 }
 
 @media (max-width: 1100px) {

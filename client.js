@@ -6,7 +6,7 @@
 // поэтому изменения админы приходят в ЛК без дублирования кода.
 (function () {
   const ADMIN = new URLSearchParams(location.search).get("admin") || "https://ivanmetel.github.io/meleshin-bp-admin/";
-  const V = "20";
+  const V = "23";
 
   const loadScript = (src) => new Promise((res, rej) => {
     const s = document.createElement("script");
@@ -28,24 +28,12 @@
     }
   };
 
-  // Вид «Условия»: предпросмотр КП + согласование и сохранение PDF (Иван 01.10 —
-  // действия убраны из героя и живут здесь).
-  function conditionsHtml(a) {
-    return '<div class="cond-view"><div class="cond-head"><div class="cond-title">Предпросмотр КП</div>' +
-      '<div class="cond-actions">' +
-      '<button class="btn ghost" id="btn-pdf">Сохранить PDF</button>' +
-      "</div></div>" + renderDoc(a) + "</div>";
-  }
-
-  function viewHtml(a) {
-    const right = STATE.view === "conditions" ? conditionsHtml(a) : renderPanel(a);
-    return '<div class="est-body">' + renderRail(a) + right + "</div>";
-  }
-
+  // Вид «Условия» — экран панели сметы (engine renderPanel): тот же каркас,
+  // внутри — документ КП в читаемом веб-виде; «Сохранить PDF» (А4) — внизу.
   function render() {
     const a = build();
     document.getElementById("hero").innerHTML = renderHero(a);
-    document.getElementById("content").innerHTML = '<div id="est-root">' + viewHtml(a) + "</div>";
+    document.getElementById("content").innerHTML = renderEstimate(a);
     document.getElementById("print-doc").innerHTML = renderDoc(a, { print: true });
     wire();
   }
@@ -65,7 +53,7 @@
         if (other) STATE[k] = !STATE[k];   // хотя бы один экран остаётся нажатым
       }
       if (roomBtn) { STATE.view = "estimate"; STATE.room = roomBtn.dataset.room; }
-      if (scr || roomBtn || viewBtn) estRoot.innerHTML = viewHtml(build());
+      if (scr || roomBtn || viewBtn) estRoot.innerHTML = renderEstimate(build());
     });
     const pdf = document.getElementById("btn-pdf");
     if (pdf) pdf.addEventListener("click", () => window.print());
