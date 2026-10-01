@@ -6,7 +6,7 @@
 // поэтому изменения админы приходят в ЛК без дублирования кода.
 (function () {
   const ADMIN = new URLSearchParams(location.search).get("admin") || "https://ivanmetel.github.io/meleshin-bp-admin/";
-  const V = "24";
+  const V = "25";
 
   const loadScript = (src) => new Promise((res, rej) => {
     const s = document.createElement("script");
@@ -28,29 +28,12 @@
     }
   };
 
-  // Поиск по позициям (Иван 01.10, вернул): строка над панелью сметы; фильтрует
-  // строки показанных таблиц — итоги и каунтеры пересчитываются по показанным
-  // строкам (принцип калькулятора), цена героя остаётся ценой КП. В «Условиях»
-  // поиска нет — документ не фильтруется.
-  const searchNote = (t) => {
-    if (!t.searchCounts.s) return "";
-    const parts = [];
-    if (STATE.works) parts.push("работы " + t.searchCounts.works[0] + " из " + t.searchCounts.works[1]);
-    if (STATE.materials) parts.push("материалы " + t.searchCounts.mats[0] + " из " + t.searchCounts.mats[1]);
-    return parts.length ? "Поиск: " + parts.join(" · ") : "";
-  };
-  // Строка поиска живёт над панелью; в «Условиях» поле скрыто, но место
-  // зарезервировано (min-height тулбара) — рамка панели не прыгает между видами.
-  const toolbar = (t) =>
-    '<div class="d3-toolbar">' + (STATE.view === "conditions" ? "" :
-      '<div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
-      '<input id="est-search" placeholder="Поиск по позициям…" value="' + esc(STATE.search) + '"></div>' +
-      '<div class="doc-filter-note" id="search-note">' + searchNote(t) + "</div>") + "</div>";
-
+  // Вид «Условия» — экран панели сметы (engine renderPanel): тот же каркас,
+  // внутри — документ КП в читаемом веб-виде; «Сохранить PDF» (А4) — внизу.
   function render() {
     const a = build();
     document.getElementById("hero").innerHTML = renderHero(a);
-    document.getElementById("content").innerHTML = toolbar(estimateTables(a)) + renderEstimate(a);
+    document.getElementById("content").innerHTML = renderEstimate(a);
     document.getElementById("print-doc").innerHTML = renderDoc(a, { print: true });
     wire();
   }
@@ -61,7 +44,7 @@
     const rerender = () => {
       const a = build();
       hero.innerHTML = renderHero(a);
-      content.innerHTML = toolbar(estimateTables(a)) + renderEstimate(a);
+      content.innerHTML = renderEstimate(a);
     };
     // Экраны — в герое (под ценой): Условия — вид, Работы/Материалы — переключатели.
     hero.addEventListener("click", (e) => {
@@ -85,15 +68,6 @@
       STATE.view = "estimate";
       STATE.room = roomBtn.dataset.room;
       rerender();
-    });
-    // Ввод поиска: обновляем панель и заметку, поле не пересоздаём — фокус живёт.
-    content.addEventListener("input", (e) => {
-      if (e.target.id !== "est-search") return;
-      STATE.search = e.target.value;
-      const estRoot = document.getElementById("est-root");
-      if (estRoot) estRoot.innerHTML = renderEstimate(build());
-      const note = document.getElementById("search-note");
-      if (note) note.textContent = searchNote(estimateTables(build()));
     });
   }
 
