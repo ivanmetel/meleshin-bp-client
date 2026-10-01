@@ -6,7 +6,7 @@
 // поэтому изменения админы приходят в ЛК без дублирования кода.
 (function () {
   const ADMIN = new URLSearchParams(location.search).get("admin") || "https://ivanmetel.github.io/meleshin-bp-admin/";
-  const V = "17";
+  const V = "18";
 
   const loadScript = (src) => new Promise((res, rej) => {
     const s = document.createElement("script");
@@ -28,27 +28,46 @@
     }
   };
 
+  // Вид «Условия»: предпросмотр КП + согласование и сохранение PDF (Иван 01.10 —
+  // действия убраны из героя и живут здесь).
+  function conditionsHtml(a) {
+    const st = STATE.status;
+    return '<div class="cond-view"><div class="cond-head"><div class="cond-title">Предпросмотр КП</div>' +
+      '<div class="cond-actions">' +
+      (st === "sent" ? '<button class="btn primary" id="btn-approve">Согласовать</button>' : '<button class="btn ghost" disabled>Согласовано</button>') +
+      '<button class="btn ghost" id="btn-pdf">Сохранить PDF</button>' +
+      "</div></div>" + renderDoc(a) + "</div>";
+  }
+
+  function viewHtml(a) {
+    const right = STATE.view === "conditions" ? conditionsHtml(a) : renderPanel(a);
+    return '<div class="est-body">' + renderRail(a) + right + "</div>";
+  }
+
   function render() {
     const a = build();
     document.getElementById("hero").innerHTML = renderHero(a);
-    document.getElementById("content").innerHTML = '<div id="view" class="view-estimate">' + renderEstimate(a) + "</div>";
+    document.getElementById("content").innerHTML = '<div id="est-root">' + viewHtml(a) + "</div>";
     document.getElementById("print-doc").innerHTML = renderDoc(a);
     wire();
   }
 
   function wire() {
-    // Смена экрана/помещения: точечное обновление зоны сметы — героя и скролл не трогаем.
+    // Смена вида/экрана/помещения: точечное обновление зоны — героя и скролл не трогаем.
     const estRoot = document.getElementById("est-root");
     if (estRoot) estRoot.addEventListener("click", (e) => {
       const scr = e.target.closest("[data-screen]");
       const roomBtn = e.target.closest("[data-room]");
+      const viewBtn = e.target.closest("[data-view]");
+      if (viewBtn) STATE.view = viewBtn.dataset.view;
       if (scr) {
+        STATE.view = "estimate";
         const k = scr.dataset.screen;
         const other = k === "works" ? STATE.materials : STATE.works;
         if (other) STATE[k] = !STATE[k];   // хотя бы один экран остаётся нажатым
       }
-      if (roomBtn) STATE.room = roomBtn.dataset.room;
-      if (scr || roomBtn) estRoot.innerHTML = renderEstimate(build());
+      if (roomBtn) { STATE.view = "estimate"; STATE.room = roomBtn.dataset.room; }
+      if (scr || roomBtn || viewBtn) estRoot.innerHTML = viewHtml(build());
     });
     const approve = document.getElementById("btn-approve");
     if (approve) approve.addEventListener("click", () => { STATE.status = "agreed"; render(); });
