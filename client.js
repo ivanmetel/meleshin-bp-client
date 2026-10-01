@@ -6,7 +6,7 @@
 // поэтому изменения админы приходят в ЛК без дублирования кода.
 (function () {
   const ADMIN = new URLSearchParams(location.search).get("admin") || "https://ivanmetel.github.io/meleshin-bp-admin/";
-  const V = "16";
+  const V = "17";
 
   const loadScript = (src) => new Promise((res, rej) => {
     const s = document.createElement("script");
