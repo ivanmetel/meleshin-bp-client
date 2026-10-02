@@ -403,10 +403,17 @@ li { margin: 4px 0; }
 .bp-table-print { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .bp-table-print th {
   font-size: 12px; font-weight: 600; color: var(--ink-2); text-align: left; white-space: nowrap;
-  padding: 6px 10px; background: var(--bg-soft); border-bottom: 1px solid var(--line);
+  background: var(--bg-soft); border-bottom: 1px solid var(--line);
 }
 .bp-table-print th.r, .bp-table-print td.r { text-align: right; }
-.bp-table-print td { font-size: 12px; color: var(--ink-1); padding: 7px 10px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+/* Горизонтальные отбивки ячеек — под ширины колонок Ивана (25/55/65/100/100): воздух убран до необходимого */
+.bp-table-print th, .bp-table-print td { padding: 7px 4px; }
+.bp-table-print th:nth-child(2), .bp-table-print td:nth-child(2) { padding-left: 10px; padding-right: 10px; }
+.bp-table-print th:nth-child(3), .bp-table-print td:nth-child(3) { padding-left: 7px; padding-right: 7px; }
+.bp-table-print th:nth-child(4), .bp-table-print td:nth-child(4) { padding-left: 5px; padding-right: 5px; }
+.bp-table-print th:nth-child(5), .bp-table-print td:nth-child(5) { padding-left: 8px; padding-right: 8px; }
+.bp-table-print th:nth-child(6), .bp-table-print td:nth-child(6) { padding-left: 8px; padding-right: 8px; }
+.bp-table-print td { font-size: 12px; color: var(--ink-1); border-bottom: 1px solid var(--line-soft); vertical-align: top; }
 .bp-table-print td.num { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--ink-3); }
 .bp-table-print td.unit { font-size: 12px; color: var(--ink-3); }
 .bp-table-print td.qty, .bp-table-print td.price { text-align: right; color: var(--ink-2); }
