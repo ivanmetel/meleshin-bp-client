@@ -277,7 +277,7 @@ li { margin: 4px 0; }
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   padding: 40px 52px 36px;  /* 52, не 53: рамка 1 px, контент остаётся ровно 688 */
-  font-size: 14px;   /* база документа: 12 текст и таблица · 14 H3/chooser · 20 H2 · 28 титул */
+  font-size: 14px;   /* база документа: 12 текст и таблица; 14 H3 и chooser; 16 H2; 24 титул */
 }
 .doc-flow .doc-sec { margin: 0 0 28px; }
 .doc-flow .doc-sec:last-of-type { margin-bottom: 0; }
