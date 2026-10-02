@@ -155,13 +155,8 @@ li { margin: 4px 0; }
   gap: 12px;
   background: var(--bg-soft);
 }
-.d3-hero .summary .proj-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ink-3);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
+/* Ярлык «КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ» над подзаголовком умер (Иван 02.10, раунд):
+   документ называет себя титульным блоком в карточке — один носитель */
 .d3-hero .summary h2 {
   font-family: 'Inter', sans-serif;
   font-size: 20px;
@@ -271,23 +266,28 @@ li { margin: 4px 0; }
 .view-toggle button.active { background: var(--bg-card); color: var(--ink-1); box-shadow: var(--shadow-sm); font-weight: 600; }
 
 /* ---------- Вкладка КП (v2): документ в читаемом веб-виде ---------- */
-/* Вся вкладка — документ КП (Иван 02.10): каркас панели сметы, листов А4 на
-   экране нет — А4 остаётся у «Сохранить PDF». Карточка документа на тёмной
-   панели, подпись менеджера замыкает документ, под ней — сохранение. */
+/* Вся вкладка — документ КП (Иван 02.10): карточка на тёмной панели, ширина
+   карточки — А4, боковые поля 53 px = печатным 14 мм (экран = PDF); листов А4
+   на экране нет — разрывы страниц остаются у «Сохранить PDF». Заголовок
+   «Коммерческое предложение» — крупно и по центру, как в PDF. */
 .doc-flow {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
-  padding: 36px 40px 32px;
+  padding: 40px 53px 36px;
+  font-size: 14px;   /* база документа: 12 служебные · 14 текст · 20 H2 · 28 титул */
 }
 .doc-flow .doc-sec { margin: 0 0 28px; }
 .doc-flow .doc-sec:last-of-type { margin-bottom: 0; }
 .doc-flow .doc-manager-bottom { margin: 24px 0 0; }
+/* Списки без маркеров (Иван 02.10): «·» не используется как разделитель —
+   строки списка идут без точечных маркеров в карточке и в печати. */
+.doc-flow ul { list-style: none; padding-left: 0; margin: 8px 0; }
 /* Полоса заголовка документа — правило корпуса BP: лого слева (23px), рядом
-   бренд; линия снизу. Контактная строка замыкает документ после подписи. */
+   бренд; линия снизу. Полоса не называет документ — название несёт заголовок.
+   Контактная строка замыкает документ после подписи. */
 .doc-band { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; border-bottom: 1.5px solid var(--line); margin-bottom: 22px; }
 .doc-band img { height: 23px; object-fit: contain; }
 .doc-band b { font-size: 14px; }
-.doc-band span { font-size: 14px; font-weight: 400; color: var(--ink-2); }
 .doc-footer { margin-top: 24px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-3); }
 .doc-save { display: flex; justify-content: flex-end; margin-top: 18px; }
 .doc-save .btn { background: transparent; border: 1px solid rgba(255,255,255,0.35); color: #fff; }
@@ -317,9 +317,11 @@ li { margin: 4px 0; }
   color: var(--ink-1);
   margin: 16px 0 8px;
 }
-.doc-h3.doc-price { font-size: 20px; font-weight: 700; margin-top: 4px; }
+/* Строка цены — кегль H3, выделение весом (Иван 02.10, раунд: «не надо так
+   крупно»); 20 px остаётся у H2, итоговых плашек и героя */
+.doc-h3.doc-price { font-size: 14px; font-weight: 700; margin-top: 4px; }
 .doc-flow p { font-size: 14px; line-height: 1.6; color: var(--ink-2); margin: 8px 0; }
-.doc-flow li { font-size: 14px; color: var(--ink-2); }
+.doc-flow li { font-size: 14px; line-height: 1.6; color: var(--ink-2); margin: 4px 0; }   /* межстрочный — как в тексте (Иван 02.10, раунд) */
 .doc-grid { display: grid; grid-template-columns: 63% 1fr; gap: 22px; align-items: start; }
 .doc-hero { border-radius: var(--radius-md); overflow: hidden; }
 .doc-hero img { width: 100%; height: 250px; object-fit: cover; }
@@ -387,11 +389,15 @@ li { margin: 4px 0; }
 /* Таблица работ документа — настоящий <table>: одна и та же в карточке КП
    и в PDF (что клиент читает, то и сохраняет); при выходе за страницу печати
    шапку повторяет браузер */
-/* Ширины — по роли колонок (правило Ивана): числовые фиксирует colgroup,
-   имя забирает остаток; шапка на светлом фоне — ink-2 (контраст ~7:1) */
+/* Ширины — по роли колонок (правило Ивана, канон 02.10): числовые колонки
+   фиксированы по максимуму роли — заголовок в одну строку, Ед. по «компл.»,
+   Кол-во по «9 999,99» — фиксированные пиксели, общие для экрана и печати
+   (карточка = печатной полосе 688 px, колонки не масштабируются вместе с
+   окном и не переносятся); имя забирает остаток. Ширины задаёт colgroup
+   в engine.js printTable. Шапка — кегль тела 14 px, ink-2 (контраст ~7:1). */
 .bp-table-print { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .bp-table-print th {
-  font-size: 12px; font-weight: 600; color: var(--ink-2); text-align: left; white-space: nowrap;
+  font-size: 14px; font-weight: 600; color: var(--ink-2); text-align: left; white-space: nowrap;
   padding: 6px 10px; background: var(--bg-soft); border-bottom: 1px solid var(--line);
 }
 .bp-table-print th.r, .bp-table-print td.r { text-align: right; }
@@ -519,54 +525,37 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 .rep-title { font-size: 14px; font-weight: 600; color: var(--ink-1); }
 .rep-detail { grid-column: 3; font-size: 12px; color: var(--ink-3); line-height: 1.55; }
 
-/* ---------- Вкладка КП: тёмная панель + рейл помещений ---------- */
-/* Геометрия навигации постоянна: активность меняет только цвет,
-   вес шрифта не меняется никогда — ничего не прыгает. */
-/* Тёмная панель: градиент + виньетка (UI-спека: #2B2826 → #3D3734) */
+/* ---------- Вкладка КП: тёмная панель + документ ---------- */
+/* Тёмная панель: градиент + виньетка (UI-спека: #2B2826 → #3D3734).
+   Ширина просмотра — сразу 100% А4 (Иван 02.10): карточка документа 794 px
+   (210 мм @96dpi) + поля панели; содержимое карточки = печатной полосе
+   182 мм ≈ 688 px — экран повторяет раскладку PDF. */
 .panel-dark {
+  width: 850px;          /* 794 (А4-карточка) + 2 × 28 паддинг панели */
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr;   /* один блок — документ КП */
-  gap: 40px;
+  grid-template-columns: 1fr;
   padding: 26px 28px;
   border-radius: 6px;
   background: linear-gradient(115deg, #2B2826 0%, #3D3734 100%);
   box-shadow: inset 0 0 70px rgba(0,0,0,0.35), var(--shadow-xl);
 }
 .est-blk { min-width: 0; }
-.est-body { display: grid; grid-template-columns: 190px minmax(0,1fr); gap: 22px; align-items: start; }
-/* Ритм рейла (ТЗ ЛК v2 §3 — 44 / 36 / 40, без шрифтовых метрик): шапка 44,
-   отступ 36, строки 40; привязка к карточке документа — замером, не на глаз. */
-.est-rooms { display: flex; flex-direction: column; gap: 0; padding-top: 26px; }
-.est-rooms-h {
-  font-size: 12px; font-weight: 600; color: var(--ink-3);
-  text-transform: uppercase; letter-spacing: 0.08em;
-  height: 44px;          /* решётка: полоса названия блока панели */
-  display: flex; align-items: center;
-  margin: 0 0 36px;      /* решётка: шапка таблицы работ документа */
-}
-.est-rooms button {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  padding: 0 12px;
-  height: 40px;
+/* Выбор помещения (Иван 02.10, раунд): горизонтальная строка между заголовком
+   зоны и таблицей; кнопки — цвета шапки таблицы (bg-soft, ink-2); активная
+   отличается цветом текста и рамкой — вес не меняется, ничего не прыгает. */
+.room-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+.room-tabs button {
+  display: inline-flex; align-items: baseline; gap: 8px;
+  padding: 8px 14px;
   border-radius: 6px;
   font-size: 14px;
-  font-weight: 500;
   color: var(--ink-2);
-  text-align: left;
+  background: var(--bg-soft);
+  border: 1px solid transparent;
 }
-.est-rooms button:hover { background: var(--bg-soft); }
-.est-rooms button.active { background: var(--accent-soft); color: var(--accent-dark); }
-.est-rooms button .c { font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-/* Полоса названия блока панели: «Коммерческое предложение» (v2 — единственный блок) */
-.blk-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  height: 44px;          /* полоса решётки: как заголовок «Помещение» рейла */
-  margin-bottom: 0;
-}
-.blk-name { color: #fff; font-size: 16px; font-weight: 500; }
+.room-tabs button .c { font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.room-tabs button.active { color: var(--ink-1); border-color: var(--ink-2); }
 
 /* ---------- Адаптив ---------- */
 @media (max-width: 1300px) {
@@ -610,7 +599,11 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
      раскладывает flex-ряды нестабильно (галерея из 6 кадров складывалась
      столбцом и переполняла финальную страницу). */
   .doc-slide p { font-size: 14px; margin: 5px 0; line-height: 1.5; }
-  .doc-slide li { font-size: 14px; margin: 2px 0; }
+  .doc-slide li { font-size: 14px; margin: 2px 0; line-height: 1.5; }   /* межстрочный — как в тексте */
+  /* Списки и в печати без маркеров — «·» в выгрузке не используется */
+  .doc-print-page ul { list-style: none; padding-left: 0; }
+  /* Выбор помещения — экранный контрол, в PDF не попадает */
+  .room-tabs { display: none; }
   .doc-h2 { margin: 0 0 9px; }
   .doc-h3 { margin: 10px 0 6px; }
   .doc-title-outer { margin: 0 0 14px; }
@@ -638,8 +631,7 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
   .d3-main { grid-template-columns: 1fr; }
   .d3-side { display: none; }
   .mf-grid, .rep-grid { grid-template-columns: 1fr; }
-  .panel-dark { grid-template-columns: 1fr; padding: 18px; }
-  .est-body { grid-template-columns: 1fr; }
+  .panel-dark { width: auto; max-width: 850px; padding: 18px; }
   .doc-grid { grid-template-columns: 1fr; }
   .doc-hero img { height: 180px; }
   .bp-head, .bp-row { grid-template-columns: 34px 1fr 44px 64px 84px 84px; font-size: 12px; }
