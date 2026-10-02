@@ -272,10 +272,11 @@ li { margin: 4px 0; }
    «Коммерческое предложение» — крупно и по центру, как в PDF. */
 .doc-flow {
   background: var(--bg-card);
-  border: 1px solid #000;   /* рамка листа — чёрная (Иван 02.10, четвёртая волна): лист, не плитка */
-  border-radius: 0;
+  border: 1px solid var(--line);   /* рамка листа — волосяная линия, НЕ чёрная (Иван 02.10): тёмной оправы вокруг листа нет */
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   padding: 40px 52px 36px;  /* 52, не 53: рамка 1 px, контент остаётся ровно 688 */
-  font-size: 14px;   /* база документа: 12 текст · 14 H3/таблица/подпись · 20 H2 · 28 титул */
+  font-size: 14px;   /* база документа: 12 текст и таблица · 14 H3/chooser · 20 H2 · 28 титул */
 }
 .doc-flow .doc-sec { margin: 0 0 28px; }
 .doc-flow .doc-sec:last-of-type { margin-bottom: 0; }
@@ -291,11 +292,11 @@ li { margin: 4px 0; }
 .doc-band b { font-size: 14px; }
 .doc-footer { margin-top: 24px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-3); }
 .doc-save { display: flex; justify-content: flex-end; margin-top: 18px; }
-.doc-save .btn { background: transparent; border: 1px solid rgba(255,255,255,0.35); color: #fff; }
-.doc-save .btn:hover { background: rgba(255,255,255,0.12); }
+.doc-save .btn { background: var(--bg-card); border: 1px solid var(--line); color: var(--ink-2); }   /* фон страницы светлый — кнопка в светлом виде */
+.doc-save .btn:hover { background: var(--bg-soft); }
 
 /* Подпись менеджера — в самом низу документа */
-.doc-manager { text-align: right; color: var(--ink-2); font-size: 14px; line-height: 1.5; }
+.doc-manager { text-align: right; color: var(--ink-2); font-size: 12px; line-height: 1.5; }   /* подпись = plain text: 12 px, как текст (Иван 02.10, четвёртая волна) */
 .doc-manager a { color: var(--ink-2); text-decoration: none; }
 .doc-title-outer { text-align: center; margin: 6px 0 22px; }
 .doc-title {
@@ -397,21 +398,23 @@ li { margin: 4px 0; }
    Кол-во по «9 999,99» — фиксированные пиксели, общие для экрана и печати
    (карточка = печатной полосе 688 px, колонки не масштабируются вместе с
    окном и не переносятся); имя забирает остаток. Ширины задаёт colgroup
-   в engine.js printTable. Шапка — кегль тела 14 px, ink-2 (контраст ~7:1). */
+   в engine.js printTable. Таблица — один кегль 12 px на экране и в печати
+   (Иван 02.10, четвёртая волна: вся таблица 12, акценты — весом). */
 .bp-table-print { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .bp-table-print th {
-  font-size: 14px; font-weight: 600; color: var(--ink-2); text-align: left; white-space: nowrap;
+  font-size: 12px; font-weight: 600; color: var(--ink-2); text-align: left; white-space: nowrap;
   padding: 6px 10px; background: var(--bg-soft); border-bottom: 1px solid var(--line);
 }
 .bp-table-print th.r, .bp-table-print td.r { text-align: right; }
-.bp-table-print td { font-size: 14px; color: var(--ink-1); padding: 7px 10px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+.bp-table-print td { font-size: 12px; color: var(--ink-1); padding: 7px 10px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
 .bp-table-print td.num { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--ink-3); }
 .bp-table-print td.unit { font-size: 12px; color: var(--ink-3); }
 .bp-table-print td.qty, .bp-table-print td.price { text-align: right; color: var(--ink-2); }
-.bp-table-print td.sum { text-align: right; font-family: 'Inter', sans-serif; font-weight: 700; }
+.bp-table-print td.sum { text-align: right; font-family: 'Inter', sans-serif; }   /* столбец Стоимости — обычный вес (Иван 02.10): жирный в таблице — только значение Итого */
 .bp-table-print .bp-total-row td { padding: 9px 0 0; border-bottom: none; }
-/* Итог таблицы — промежуточная сумма (не конечная цена): кегль тела, вес — акцент */
-.bp-table-print .bp-total .v { font-size: 14px; }
+/* Итог таблицы — единственное жирное значение в таблице (Иван 02.10); кегль таблицы 12 */
+.bp-table-print .bp-total .lbl { font-size: 12px; font-weight: 400; }
+.bp-table-print .bp-total .v { font-size: 12px; font-weight: 700; }
 
 /* ---------- Вид: маркдаун ---------- */
 .md-wrap { display: flex; flex-direction: column; gap: 12px; }
@@ -534,14 +537,12 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
    (210 мм @96dpi) + поля панели; содержимое карточки = печатной полосе
    182 мм ≈ 688 px — экран повторяет раскладку PDF. */
 .panel-dark {
-  width: 850px;          /* 794 (А4-карточка) + 2 × 28 паддинг панели */
+  width: 794px;          /* карточка А4 без тёмной оправы (Иван 02.10): вокруг листа нет чёрного — панель прозрачна */
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
-  padding: 26px 28px;
-  border-radius: 0;
-  background: #000;      /* рамка вокруг листа — чёрная (Иван 02.10): градиент и серый ореол тени умерли */
-  box-shadow: none;
+  padding: 0;
+  background: none;
 }
 .est-blk { min-width: 0; }
 /* Выбор помещения (Иван 02.10, раунд): горизонтальная строка между заголовком
@@ -606,9 +607,6 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
   /* Списки с булетами и в печати (Иван 02.10: булеты — структура списка,
      не знак-разделитель; «·» умер в заголовке окна и текстовых значениях) */
   .doc-print-page ul { list-style: disc; padding-left: 5mm; }
-  /* Кегль шапки таблицы в печати — прежний 12 px (Иван 02.10: «стали
-     больше, а не должны»); 14 px — экранное правило */
-  .bp-table-print th { font-size: 12px; }
   /* Выбор помещения — экранный контрол, в PDF не попадает */
   .room-tabs { display: none; }
   .doc-h2 { margin: 0 0 9px; }
