@@ -1,12 +1,14 @@
-// ЛК клиента (bp-client) — клиентская половина машины сборки КП.
+// ЛК клиента v2 (bp-client) — клиентская половина машины сборки КП.
 // Источник состояния — админка (bp-admin): по умолчанию ЛК грузит опубликованное
 // состояние (published.json репо админки), ссылка «Предпросмотр ЛК клиента» из
 // админки передаёт текущее состояние конструктора в адресе (#preview=…) — правки
 // админы видны в ЛК сразу. Движок и данные подгружаются со страницы админки,
 // поэтому изменения админы приходят в ЛК без дублирования кода.
+// v2 (Иван 02.10): одна вкладка — КП; экранов сметы нет; выбор помещения в рейле
+// фильтрует таблицу работ внутри документа; «Сохранить PDF» — полный документ.
 (function () {
   const ADMIN = new URLSearchParams(location.search).get("admin") || "https://ivanmetel.github.io/meleshin-bp-admin/";
-  const V = "27";
+  const V = "28";
 
   const loadScript = (src) => new Promise((res, rej) => {
     const s = document.createElement("script");
@@ -28,8 +30,7 @@
     }
   };
 
-  // Вид «Условия» — экран панели сметы (engine renderPanel): тот же каркас,
-  // внутри — документ КП в читаемом веб-виде; «Сохранить PDF» (А4) — внизу.
+  // Кабинет v2: герой (без экранов) + вкладка КП (engine renderEstimate).
   function render() {
     const a = build();
     document.getElementById("hero").innerHTML = renderHero(a);
@@ -39,35 +40,15 @@
   }
 
   function wire() {
-    const hero = document.getElementById("hero");
     const content = document.getElementById("content");
-    const rerender = () => {
-      const a = build();
-      hero.innerHTML = renderHero(a);
-      content.innerHTML = renderEstimate(a);
-    };
-    // Экраны — в герое (под ценой): Условия — вид, Работы/Материалы — переключатели.
-    hero.addEventListener("click", (e) => {
-      const viewBtn = e.target.closest("[data-view]");
-      const scr = e.target.closest("[data-screen]");
-      if (!viewBtn && !scr) return;
-      if (viewBtn) STATE.view = viewBtn.dataset.view;
-      if (scr) {
-        STATE.view = "estimate";
-        const k = scr.dataset.screen;
-        const other = k === "works" ? STATE.materials : STATE.works;
-        if (other) STATE[k] = !STATE[k];   // хотя бы один экран остаётся нажатым
-      }
-      rerender();
-    });
-    // Помещения (клик в «Условиях» возвращает к таблицам) + сохранение PDF.
+    // Помещение фильтрует таблицу работ в документе — меняется только вкладка КП;
+    // печать собирается от манифеста, выбор помещения в PDF не попадает.
     content.addEventListener("click", (e) => {
       if (e.target.closest("#btn-pdf")) { window.print(); return; }
       const roomBtn = e.target.closest("[data-room]");
       if (!roomBtn) return;
-      STATE.view = "estimate";
       STATE.room = roomBtn.dataset.room;
-      rerender();
+      document.getElementById("content").innerHTML = renderEstimate(build());
     });
   }
 

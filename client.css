@@ -180,22 +180,8 @@ li { margin: 4px 0; }
   font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
 }
 .d3-hero .summary .total .sub { font-size: 14px; font-weight: 600; color: var(--ink-2); margin-top: 4px; line-height: 1.4; }
-/* Экраны кабинета (Иван 01.10): «Условия» / «Работы» / «Материалы» — под ценой
-   в правой колонке героя; Работы/Материалы — переключатели, «Условия» — вид */
-.hero-nav { display: flex; gap: 8px; margin-top: 16px; }
-.hero-nav button {
-  flex: 1;
-  height: 40px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ink-2);
-  background: var(--bg-card);
-  border: 1px solid var(--line);
-  white-space: nowrap;
-}
-.hero-nav button:hover { color: var(--ink-1); border-color: var(--ink-4); }
-.hero-nav button.active { background: var(--accent-soft); color: var(--accent-dark); border-color: transparent; font-weight: 600; }
+/* v2 (Иван 02.10): экранов сметы нет — правая колонка героя заканчивается ценой;
+   кабинет под героем — одна вкладка КП, навигация по помещениям в рейле. */
 .btn {
   padding: 11px 14px;
   border-radius: 6px;
@@ -284,8 +270,8 @@ li { margin: 4px 0; }
 }
 .view-toggle button.active { background: var(--bg-card); color: var(--ink-1); box-shadow: var(--shadow-sm); font-weight: 600; }
 
-/* ---------- «Условия»: документ КП в читаемом веб-виде ---------- */
-/* Экран той же панели сметы (Иван 01.10): каркас не меняется, листов А4 на
+/* ---------- Вкладка КП (v2): документ в читаемом веб-виде ---------- */
+/* Вся вкладка — документ КП (Иван 02.10): каркас панели сметы, листов А4 на
    экране нет — А4 остаётся у «Сохранить PDF». Карточка документа на тёмной
    панели, подпись менеджера замыкает документ, под ней — сохранение. */
 .doc-flow {
@@ -398,7 +384,7 @@ li { margin: 4px 0; }
   letter-spacing: -0.02em;
 }
 
-/* Таблица работ документа — настоящий <table>: одна и та же в карточке «Условия»
+/* Таблица работ документа — настоящий <table>: одна и та же в карточке КП
    и в PDF (что клиент читает, то и сохраняет); при выходе за страницу печати
    шапку повторяет браузер */
 /* Ширины — по роли колонок (правило Ивана): числовые фиксирует colgroup,
@@ -533,18 +519,13 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 .rep-title { font-size: 14px; font-weight: 600; color: var(--ink-1); }
 .rep-detail { grid-column: 3; font-size: 12px; color: var(--ink-3); line-height: 1.55; }
 
-/* ---------- Вид: клиентская смета (экраны работы/материалы) ---------- */
+/* ---------- Вкладка КП: тёмная панель + рейл помещений ---------- */
 /* Геометрия навигации постоянна: активность меняет только цвет,
    вес шрифта не меняется никогда — ничего не прыгает. */
-/* Единая решётка (Иван 01.10): строки навигации и строки таблиц лежат на общих
-   горизонталях. Колонка навигации повторяет предструктуру панели: паддинг 26px,
-   полоса экранов 44px (= шапка блока), заголовок «Помещение» 36px (= шапка таблицы),
-   дальше шаг 40px. Вторая таблица при обоих экранах возвращается на ту же решётку:
-   зазор 40 + шапка блока 44 + шапка таблицы 36 = 120 = 3 × 40. */
 /* Тёмная панель: градиент + виньетка (UI-спека: #2B2826 → #3D3734) */
 .panel-dark {
   display: grid;
-  grid-template-columns: 1fr;   /* таблицы друг под другом, каждая в полную ширину — имя не переносится */
+  grid-template-columns: 1fr;   /* один блок — документ КП */
   gap: 40px;
   padding: 26px 28px;
   border-radius: 6px;
@@ -552,17 +533,16 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
   box-shadow: inset 0 0 70px rgba(0,0,0,0.35), var(--shadow-xl);
 }
 .est-blk { min-width: 0; }
-.est-table { overflow-x: auto; }
 .est-body { display: grid; grid-template-columns: 190px minmax(0,1fr); gap: 22px; align-items: start; }
-/* Ритм навигации = ритм таблицы: одна высота строки — 40px, без шрифтовых метрик;
-   шаг колонок одинаковый (таблица: 40 c бордером внутри, навигация: 40 без зазоров) */
+/* Ритм рейла (ТЗ ЛК v2 §3 — 44 / 36 / 40, без шрифтовых метрик): шапка 44,
+   отступ 36, строки 40; привязка к карточке документа — замером, не на глаз. */
 .est-rooms { display: flex; flex-direction: column; gap: 0; padding-top: 26px; }
 .est-rooms-h {
   font-size: 12px; font-weight: 600; color: var(--ink-3);
   text-transform: uppercase; letter-spacing: 0.08em;
   height: 44px;          /* решётка: полоса названия блока панели */
   display: flex; align-items: center;
-  margin: 0 0 36px;      /* решётка: полоса шапки таблицы — комнаты ложатся на строки */
+  margin: 0 0 36px;      /* решётка: шапка таблицы работ документа */
 }
 .est-rooms button {
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
@@ -577,57 +557,16 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 .est-rooms button:hover { background: var(--bg-soft); }
 .est-rooms button.active { background: var(--accent-soft); color: var(--accent-dark); }
 .est-rooms button .c { font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-/* Полоса названия блока панели: «Коммерческое предложение» / «Строительно-монтажные…» / «Материалы» */
+/* Полоса названия блока панели: «Коммерческое предложение» (v2 — единственный блок) */
 .blk-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  height: 44px;          /* полоса решётки: как экраны навигации */
+  height: 44px;          /* полоса решётки: как заголовок «Помещение» рейла */
   margin-bottom: 0;
 }
 .blk-name { color: #fff; font-size: 16px; font-weight: 500; }
-.blk-total { color: #fff; text-align: right; white-space: nowrap; }
-.blk-total .tnum { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; font-family: 'Inter', sans-serif; }
-
-/* Правило ширины (десктоп): таблица занимает всю ширину блока; распределение
-   по роли колонок — имя гибкое (забирает остаток, min под типовую строку),
-   числовые — по заголовку; Ед. и Кол-во — по максимуму роли: «компл.» и
-   «9 999,99». Переносится только текст, числа — никогда. Горизонтальный
-   скролл — запасной вариант ниже минимума. */
-.est-table {
-  display: grid;
-  grid-template-columns: 26px minmax(160px, 2.4fr) 44px 57px max-content max-content;
-  column-gap: 7px;
-  row-gap: 0;
-  align-items: center;
-  overflow-x: auto;
-}
-.est-head, .est-row {
-  display: grid;
-  grid-template-columns: subgrid;
-  grid-column: 1 / -1;
-  align-items: center;
-  padding: 0 8px;
-}
-.est-head {
-  font-size: 12px;
-  font-weight: 400;
-  color: #A69F9A;
-  letter-spacing: 0.02em;
-  height: 36px;           /* полоса решётки: как заголовок «Помещение» навигации */
-  border-bottom: 1px solid rgba(255,255,255,0.14);
-}
-.est-head div { white-space: nowrap; text-align: left; }
-.est-head .r { text-align: right; }
-.est-row { padding: 0 8px; height: 40px; border-bottom: 1px solid rgba(255,255,255,0.07); }
-.est-row:last-child { border-bottom: none; }
-.est-row:hover { background: rgba(255,255,255,0.08); border-radius: 6px; }
-.est-row .num { font-family: 'Inter', sans-serif; font-size: 12px; color: #A69F9A; text-align: left; }
-.est-row .name { color: #fff; font-size: 14px; font-weight: 400; line-height: 1.45; text-align: left; white-space: nowrap; }   /* имя в одну строку — высота строки постоянна */
-.est-row .unit { color: #A69F9A; font-size: 12px; text-align: left; }
-.est-row .qty, .est-row .price { color: #fff; font-size: 12px; text-align: right; white-space: nowrap; }
-.est-row .cost { text-align: right; color: #fff; font-size: 14px; font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
 /* ---------- Адаптив ---------- */
 @media (max-width: 1300px) {
@@ -687,7 +626,7 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
   .doc-photos img + img { margin-left: 10px; }
   .doc-gallery img { width: calc((100% - 50px) / 6); height: 92px; }
   .doc-note, .doc-filter-note { margin-top: 6px; }
-  /* Таблица работ — правила общие с карточкой «Условия» (см. выше); в печати
+  /* Таблица работ — правила общие с карточкой КП (см. выше); в печати
      строка не рвётся */
   .bp-table-print tr { page-break-inside: avoid; break-inside: avoid; }
 }
