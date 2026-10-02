@@ -301,14 +301,14 @@ li { margin: 4px 0; }
 .doc-title-outer { text-align: center; margin: 6px 0 22px; }
 .doc-title {
   font-family: 'Inter', sans-serif;
-  font-size: 28px;
+  font-size: 24px;   /* титул 24 (Иван 02.10) */
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 .doc-subtitle { font-size: 14px; color: var(--ink-2); margin-top: 8px; }
 .doc-h2 {
   font-family: 'Inter', sans-serif;
-  font-size: 20px;
+  font-size: 16px;   /* H2 16 (Иван 02.10) */
   font-weight: 700;
   letter-spacing: -0.01em;
   margin: 0 0 14px;
@@ -620,7 +620,7 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
   .doc-h2 { margin: 0 0 9px; }
   .doc-h3 { margin: 10px 0 6px; }
   .doc-title-outer { margin: 0 0 14px; }
-  .doc-title { font-size: 28px; }
+  .doc-title { font-size: 24px; }
   .doc-grid { gap: 16px; }
   .doc-hero img { height: 150px; }
   .doc-band img { height: 6mm; }
