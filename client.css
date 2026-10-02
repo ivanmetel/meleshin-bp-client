@@ -271,6 +271,7 @@ li { margin: 4px 0; }
    на экране нет — разрывы страниц остаются у «Сохранить PDF». Заголовок
    «Коммерческое предложение» — крупно и по центру, как в PDF. */
 .doc-flow {
+  color: #434343;   /* все тексты документа rgb(67,67,67) (Иван 02.10); исключения: лого-бренд, подпись менеджера, контактная строка */
   background: var(--bg-card);
   border: 1px solid var(--line);   /* рамка листа — волосяная линия, НЕ чёрная (Иван 02.10): тёмной оправы вокруг листа нет */
   border-radius: var(--radius-lg);
@@ -289,7 +290,7 @@ li { margin: 4px 0; }
    Контактная строка замыкает документ после подписи. */
 .doc-band { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; border-bottom: 1.5px solid var(--line); margin-bottom: 22px; }
 .doc-band img { height: 23px; object-fit: contain; }
-.doc-band b { font-size: 14px; }
+.doc-band b { font-size: 14px; color: var(--ink-1); }   /* лого-бренд — исключение из цвета текста */
 .doc-footer { margin-top: 24px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-3); }
 .doc-save { display: flex; justify-content: flex-end; margin-top: 18px; }
 .doc-save .btn { background: var(--bg-card); border: 1px solid var(--line); color: var(--ink-2); }   /* фон страницы светлый — кнопка в светлом виде */
@@ -305,7 +306,7 @@ li { margin: 4px 0; }
   font-weight: 700;
   letter-spacing: -0.02em;
 }
-.doc-subtitle { font-size: 14px; color: var(--ink-2); margin-top: 8px; }
+.doc-subtitle { font-size: 14px; color: #434343; margin-top: 8px; }
 .doc-h2 {
   font-family: 'Inter', sans-serif;
   font-size: 16px;   /* H2 16 (Иван 02.10) */
@@ -322,8 +323,8 @@ li { margin: 4px 0; }
 /* Строка цены — кегль H3, выделение весом (Иван 02.10, раунд: «не надо так
    крупно»); 20 px остаётся у H2, итоговых плашек и героя */
 .doc-h3.doc-price { font-size: 14px; font-weight: 700; margin-top: 4px; }
-.doc-flow p { font-size: 12px; line-height: 1.5; color: var(--ink-2); margin: 8px 0; }   /* plain text: 12 px, одинаковые все параметры с PDF (Иван 02.10, четвёртая волна) */
-.doc-flow li { font-size: 12px; line-height: 1.5; color: var(--ink-2); margin: 4px 0; }
+.doc-flow p { font-size: 12px; line-height: 1.5; color: #434343; margin: 8px 0; }   /* plain text: 12 px, одинаковые все параметры с PDF (Иван 02.10, четвёртая волна) */
+.doc-flow li { font-size: 12px; line-height: 1.5; color: #434343; margin: 4px 0; }
 .doc-grid { display: grid; grid-template-columns: 63% 1fr; gap: 22px; align-items: start; }
 .doc-hero { border-radius: var(--radius-md); overflow: hidden; }
 .doc-hero img { width: 100%; height: 250px; object-fit: cover; }
@@ -334,7 +335,7 @@ li { margin: 4px 0; }
    «не поместились в ширину А4»): доля 688 px минус отбивки, не flex-рост */
 .doc-photos img { flex: none; width: calc((100% - 20px) / 3); height: 215px; object-fit: cover; border-radius: var(--radius-md); }
 .doc-gallery img { flex: none; width: calc((100% - 50px) / 6); height: 150px; }
-.doc-note { font-size: 12px; color: var(--ink-2); margin-top: 10px; }   /* цвет текста единый (Иван 02.10): заметка не серая */
+.doc-note { font-size: 12px; color: #434343; margin-top: 10px; }   /* цвет текста единый (Иван 02.10): заметка не серая */
 .doc-filter-note { font-size: 12px; color: var(--ink-3); margin-top: 8px; }
 
 /* Таблица работ (плоская, сплошная нумерация) */
@@ -402,7 +403,7 @@ li { margin: 4px 0; }
    (Иван 02.10, четвёртая волна: вся таблица 12, акценты — весом). */
 .bp-table-print { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .bp-table-print th {
-  font-size: 12px; font-weight: 600; color: var(--ink-2); text-align: left; white-space: nowrap;
+  font-size: 12px; font-weight: 600; color: #434343; text-align: left; white-space: nowrap;
   background: var(--bg-soft); border-bottom: 1px solid var(--line);
 }
 .bp-table-print th.r, .bp-table-print td.r { text-align: right; }
@@ -413,13 +414,14 @@ li { margin: 4px 0; }
 .bp-table-print th:nth-child(4), .bp-table-print td:nth-child(4) { padding-left: 5px; padding-right: 5px; }
 .bp-table-print th:nth-child(5), .bp-table-print td:nth-child(5) { padding-left: 8px; padding-right: 8px; }
 .bp-table-print th:nth-child(6), .bp-table-print td:nth-child(6) { padding-left: 8px; padding-right: 8px; }
-.bp-table-print td { font-size: 12px; color: var(--ink-1); border-bottom: 1px solid var(--line-soft); vertical-align: top; }
-.bp-table-print td.num { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--ink-3); }
-.bp-table-print td.unit { font-size: 12px; color: var(--ink-3); }
-.bp-table-print td.qty, .bp-table-print td.price { text-align: right; color: var(--ink-2); }
+.bp-table-print td { font-size: 12px; color: #434343; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+.bp-table-print td.num { font-family: 'Inter', sans-serif; font-size: 12px; color: #434343; }
+.bp-table-print td.unit { font-size: 12px; color: #434343; }
+.bp-table-print td.qty, .bp-table-print td.price { text-align: right; color: #434343; }
 .bp-table-print td.sum { text-align: right; font-family: 'Inter', sans-serif; }   /* столбец Стоимости — обычный вес (Иван 02.10): жирный в таблице — только значение Итого */
 .bp-table-print .bp-total-row td { padding: 9px 0 0; border-bottom: none; }
 /* Итог таблицы — единственное жирное значение в таблице (Иван 02.10); кегль таблицы 12 */
+.bp-table-print .bp-total { color: #434343; }
 .bp-table-print .bp-total .lbl { font-size: 12px; font-weight: 400; }
 .bp-table-print .bp-total .v { font-size: 12px; font-weight: 700; }
 
