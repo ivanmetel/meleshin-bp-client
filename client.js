@@ -9,7 +9,7 @@
 // полный документ.
 (function () {
   const ADMIN = new URLSearchParams(location.search).get("admin") || "https://ivanmetel.github.io/meleshin-bp-admin/";
-  const V = "30";
+  const V = "31";
 
   const loadScript = (src) => new Promise((res, rej) => {
     const s = document.createElement("script");
