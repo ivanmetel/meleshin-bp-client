@@ -537,12 +537,13 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
    (210 мм @96dpi) + поля панели; содержимое карточки = печатной полосе
    182 мм ≈ 688 px — экран повторяет раскладку PDF. */
 .panel-dark {
-  width: 794px;          /* карточка А4 без тёмной оправы (Иван 02.10): вокруг листа нет чёрного — панель прозрачна */
+  width: 850px;          /* 794 (А4-карточка) + 2 × 28 паспарту */
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
-  padding: 0;
-  background: none;
+  padding: 26px 28px;
+  border-radius: 6px;
+  background: var(--bg-page-2);   /* рамка листа нужна, но не чёрная (Иван 02.10): тёплое паспарту палитры корпуса */
 }
 .est-blk { min-width: 0; }
 /* Выбор помещения (Иван 02.10, раунд): горизонтальная строка между заголовком
