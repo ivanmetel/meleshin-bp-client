@@ -422,7 +422,7 @@ li { margin: 4px 0; }
 .bp-table-print .bp-total-row td { padding: 9px 0 0; border-bottom: none; }
 /* Итог таблицы — единственное жирное значение в таблице (Иван 02.10); кегль таблицы 12 */
 .bp-table-print .bp-total { color: #434343; }
-.bp-table-print .bp-total .lbl { font-size: 12px; font-weight: 400; }
+.bp-table-print .bp-total .lbl { font-size: 12px; font-weight: 700; }   /* «Итого:» жирным — там и там (Иван 02.10) */
 .bp-table-print .bp-total .v { font-size: 12px; font-weight: 700; }
 
 /* ---------- Вид: маркдаун ---------- */
